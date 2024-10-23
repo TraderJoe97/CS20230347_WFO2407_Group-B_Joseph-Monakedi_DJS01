@@ -16,11 +16,7 @@ const remainingFuel = {
   value: initialFuel.value - fuelBurnRate.value * time.value,
   unit: 'kg',
 };
-const newVelocity = calcNewVel(
-  acceleration.value,
-  initialVelocity.value,
-  time.value
-);
+const newVelocity = calcNewVel(acceleration, initialVelocity, time);
 
 /**
  * Calculate the new velocity based on acceleration, initial velocity, and time.
@@ -28,7 +24,7 @@ const newVelocity = calcNewVel(
  * @param {Object} acceleration - Acceleration object with value and unit properties. Unit must be 'm/s^2'.
  * @param {Object} initialVelocity - Initial velocity object with value and unit properties. Unit must be 'km/h'.
  * @param {Object} time - Time object with value and unit properties. Unit must be 's'.
- * @returns {number} - New velocity in kilometers per hour (km/h).
+ * @returns {object} - New velocity object with value and unit properties.
  * @throws Will throw an error if parameters are not of type object or are negative.
  * @throws Will throw an error if unit of parameters are not as specified.
  */
@@ -52,12 +48,16 @@ function calcNewVel(acceleration, initialVelocity, time) {
   if (time.value < 0) {
     throw new Error("time must be non-negative.");
   }
-  return initialVelocity.value + acceleration.value * time.value * 3.6;
+  const newVelocity = {
+    value: initialVelocity.value + acceleration.value * time.value * 3.6,
+    unit: 'km/h',
+  };
+  return newVelocity;
 }
 
-console.log(`New Velocity: ${newVelocity} km/h`);
+console.log(`New Velocity: ${newVelocity.value} ${newVelocity.unit}`);
 console.log(`New Distance: ${newDistance.value} ${newDistance.unit}`);
-console.log(`Remaining Fuel: ${remainingFuel.value} kg`);
+console.log(`Remaining Fuel: ${remainingFuel.value} ${remainingFuel.unit}`);
 
 
 
